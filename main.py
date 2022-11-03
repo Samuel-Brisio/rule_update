@@ -40,7 +40,7 @@ rulesPath = "/usr/local/etc/rules/"
 
 
 newRulesFile = open(newRulesPath + 'new_rules.rules')
-ruleUpdate = open(rulesPath + "ruleUpdate_" + str(datetime.now()), 'w')
+ruleUpdate = open(rulesPath + "ruleUpdate.rules", 'a+')
 
 # iterate over files in
 # that directory
@@ -48,8 +48,8 @@ ruleUpdate = open(rulesPath + "ruleUpdate_" + str(datetime.now()), 'w')
 for newRule in newRulesFile:
     hasNewRule = False
 
-    for filename in os.listdir(rulesDirectory):
-        f = os.path.join(rulesDirectory, filename)
+    for filename in os.listdir(rulesPath):
+        f = os.path.join(rulesPath, filename)
         
         # checking if it is a file
         if not os.path.isfile(f):
