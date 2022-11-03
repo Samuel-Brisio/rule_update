@@ -33,14 +33,14 @@ def diffHasIDField(str1, str2):
 
     return True 
 
-#newRulesPath = "/home/user/ruleUpdate/"
-#rulesPath = "/usr/local/etc/rules/" 
+
+# Paths
+newRulesPath = "/home/user/ruleUpdate/"
+rulesPath = "/usr/local/etc/rules/" 
 
 
-newRulesFile = open('files/new_rules.rules')
-
-rulesDirectory = "example_file/rules/"
-ruleUpdate = open(rulesDirectory + "ruleUpdate_" + str(datetime.now()), 'w')
+newRulesFile = open(newRulesPath + 'new_rules.rules')
+ruleUpdate = open(rulesPath + "ruleUpdate_" + str(datetime.now()), 'w')
 
 # iterate over files in
 # that directory
