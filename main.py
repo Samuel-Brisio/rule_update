@@ -33,7 +33,8 @@ def diffHasIDField(str1, str2):
 
     return True 
 
-    
+#newRulesPath = "/home/user/ruleUpdate/"
+#rulesPath = "/usr/local/etc/rules/" 
 
 
 newRulesFile = open('files/new_rules.rules')
