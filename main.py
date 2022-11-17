@@ -1,6 +1,9 @@
 import os
 import re
-from datetime import datetime
+import yaml
+import sys
+import getopt
+
 
 def diffHasIDField(str1, str2):
     words1 = re.split(';', str1)
@@ -33,47 +36,80 @@ def diffHasIDField(str1, str2):
 
     return True 
 
-#newRulesPath = "/home/user/ruleUpdate/"
-#rulesPath = "/usr/local/etc/rules/" 
+
+def argumentsParsing(argv):
+    try:
+        opts, args = getopt.getopt(argv, 'hc:', 'config')
+    except getopt.GetoptError:
+        print('main.py -c <configfile>')
+        sys.exit(2)
+    
+    parameters = []
+
+    if opts:
+        parameters = opts
+    elif args:
+        parameters = args
+    else:
+        print('main.py -c <configfile>')
+        sys.exit(2)
+    
+    return parameters 
 
 
-newRulesFile = open('files/new_rules.rules')
-
-rulesDirectory = "example_file/rules/"
-ruleUpdate = open(rulesDirectory + "ruleUpdate_" + str(datetime.now()), 'w')
-
-# iterate over files in
-# that directory
-
-for newRule in newRulesFile:
-    hasNewRule = False
-
-    for filename in os.listdir(rulesDirectory):
-        f = os.path.join(rulesDirectory, filename)
-        
-        # checking if it is a file
-        if not os.path.isfile(f):
-            continue
-        
-        File = open(f)
+def yamlParsing(fileName):
+    try:
+        file = open(fileName, 'r')
+    except FileNotFoundError:
+        print("Arquivo não existe")
+        sys.exit(2)
+    
+    yamlFile = yaml.safe_load(file)
+    return yamlFile['paths'], yamlFile["file_names"]
 
 
-        for row in File:
-            isNotRule = re.search("#", row)
+def main():
+    args = argumentsParsing(sys.argv[1:])
+    paths, names = yamlParsing(args[-1])
+
+    newRulesFile = open(paths['new_rules'] + names['new_rules'])
+
+    rulesDirectory = paths['rules']
+    ruleUpdate = open(rulesDirectory + names["rule_update"], 'a')
+
+    # iterate over files in
+    # that directory
+    for newRule in newRulesFile:
+        hasNewRule = False
+
+        for filename in os.listdir(rulesDirectory):
+            f = os.path.join(rulesDirectory, filename)
             
-            if isNotRule or len(row) == 0 or row == '\n':
+            # checking if it is a file
+            if not os.path.isfile(f):
                 continue
+            
+            File = open(f)
 
-            hasNewRule = diffHasIDField(newRule, row)
 
+            for row in File:
+                isNotRule = re.search("#", row)
+                
+                if isNotRule or len(row) == 0 or row == '\n':
+                    continue
+
+                hasNewRule = diffHasIDField(newRule, row)
+
+                if hasNewRule:
+                    break
             if hasNewRule:
                 break
-        if hasNewRule:
-            break
-    
-    if not hasNewRule:
-        ruleUpdate.write(newRule)
+        
+        if not hasNewRule:
+            ruleUpdate.write(newRule)
 
-            
+    os.remove(paths['new_rules'] + names['new_rules'])
 
 
+if __name__ == "__main__":
+    main()

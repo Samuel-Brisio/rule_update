@@ -1,0 +1,7 @@
+paths:
+  rules: "/usr/local/etc/rules/"
+  new_rules: "/home/user/newRules/"
+
+file_names:
+  new_rules: "new_rules.rules"
+  rule_update: "ruleUpdate.rules"
