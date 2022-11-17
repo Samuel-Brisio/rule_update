@@ -75,7 +75,7 @@ def main():
     newRulesFile = open(paths['new_rules'] + names['new_rules'])
 
     rulesDirectory = paths['rules']
-    ruleUpdate = open(rulesDirectory + names["rule_update"], 'a')
+    ruleUpdate = open(rulesDirectory + names["rule_update"], 'a+')
 
     # iterate over files in
     # that directory
