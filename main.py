@@ -54,7 +54,7 @@ def argumentsParsing(argv):
         print('main.py -c <configfile>')
         sys.exit(2)
     
-    return parameters 
+    return parameters[-1] 
 
 
 def yamlParsing(fileName):
